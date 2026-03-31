@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Partida - Quiz de Meiose</title>
+    <link rel="stylesheet" href="CSS/game.css" />
+</head>
+
+<body>
+    <main class="app-shell">
+        <section class="card top-panel">
+            <div>
+                <h1>Partida</h1>
+                <p id="turn-text" class="subtitle"></p>
+            </div>
+            <div class="dice-box">
+                <p id="dice-text" class="subtitle">Dados: -</p>
+                <button id="roll-btn" class="btn primary" type="button">Rolar Dados</button>
+            </div>
+        </section>
+
+        <section class="card board-card">
+
+            <div id="board" aria-label="Tabuleiro com 64 casas"></div>
+            <!-- adcionar 2 dados animados mostrando o valor -->
+            <div class="status-grid">
+                <div>
+                    <h2>Pontuação</h2>
+                    <ul id="score-list" class="score-list"></ul>
+                </div>
+                <div>
+                    <h2>Eventos</h2>
+                    <ul id="event-log" class="event-log"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Guilherme Pereira - Victor Hugo - Davi Gato - Pedro AIlton - Caio Regio - Enzo Miguel - 2ºDS</p>
+    </footer>
+    <div id="question-modal" class="modal hidden">
+        <div class="modal-card">
+            <h3>Pergunta</h3>
+            <p id="question-prompt"></p>
+            <input id="answer-input" type="text" placeholder="Digite sua resposta" maxlength="80" />
+            <button id="submit-answer" class="btn primary" type="button">Confirmar</button>
+            <p id="feedback" class="feedback"></p>
+        </div>
+    </div>
+    <script src="JS/questions.js" defer></script>
+    <script src="JS/game.js" defer></script>
+</body>
+
+
+
+</html>
