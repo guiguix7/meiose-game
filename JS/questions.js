@@ -1,4 +1,5 @@
 const QUESTIONS = [
+	// Fase de perguntas fáceis
 	{ prompt: "Em qual fase os cromossomos se alinham no plano equatorial na mitose? a) profase b) metafase c) anafase d) telofase", answer: "b", type: "facil" },
 	{ prompt: "Qual processo gera duas celulas-filhas geneticamente identicas? a) meiose b) mitose c) fecundacao d) crossing-over", answer: "b", type: "facil" },
 	{ prompt: "A meiose possui quantas divisoes celulares principais? a) 1 b) 2 c) 3 d) 4", answer: "b", type: "facil" },
@@ -20,6 +21,7 @@ const QUESTIONS = [
 	{ prompt: "A uniao de dois gametas forma: a) embriao b) zigoto c) feto d) blastocisto", answer: "b", type: "facil" },
 	{ prompt: "Quantas cromatides tem um cromossomo duplicado? a) 1 b) 2 c) 3 d) 4", answer: "b", type: "facil" },
 
+	// Fase de perguntas médias
 	{ prompt: "Em qual etapa ocorre o crossing-over? a) profase i b) metafase i c) anafase ii d) telofase ii", answer: "a", type: "media" },
 	{ prompt: "Na meiose I, o que se separa primeiro? a) cromatides irmas b) cromossomos homologos c) nucleo d) ribossomos", answer: "b", type: "media" },
 	{ prompt: "Qual fase da meiose separa cromatides irmas? a) anafase i b) metafase ii c) anafase ii d) profase ii", answer: "c", type: "media" },
@@ -29,6 +31,7 @@ const QUESTIONS = [
 	{ prompt: "Qual e a funcao do fuso mitotico? a) produzir energia b) separar cromossomos c) sintetizar proteinas d) duplicar DNA", answer: "b", type: "media" },
 	{ prompt: "A duplicacao do DNA ocorre em qual fase? a) profase b) metafase c) fase s d) telofase", answer: "c", type: "media" },
 
+	// Fase de perguntas difíceis
 	{ prompt: "A variabilidade genetica vem do crossing-over e: a) mutacao b) segregacao independente c) mitose d) replicacao", answer: "b", type: "dificil" },
 	{ prompt: "A sinapse dos cromossomos ocorre em: a) profase i b) metafase ii c) anafase i d) telofase ii", answer: "a", type: "dificil" },
 	{ prompt: "O quiasma e observado em: a) profase i b) metafase i c) anafase ii d) telofase i", answer: "a", type: "dificil" },
@@ -36,6 +39,7 @@ const QUESTIONS = [
 	{ prompt: "Qual e o cariotipo? a) tipo de celula b) conjunto de cromossomos c) divisao celular d) tipo de DNA", answer: "b", type: "dificil" },
 	{ prompt: "Quando ocorre a citocinese? a) inicio da divisao b) meio c) final da divisao d) antes da interfase", answer: "c", type: "dificil" },
 
+	// Fase de perguntas de verdadeiro ou falso
 	{ prompt: "A meiose reduz o numero de cromossomos pela metade.", answer: "verdadeiro", type: "verdadeiro_falso" },
 	{ prompt: "A variabilidade genetica aumenta com crossing-over.", answer: "verdadeiro", type: "verdadeiro_falso" },
 	{ prompt: "Mitose ocorre para formar gametas.", answer: "falso", type: "verdadeiro_falso" },
@@ -57,6 +61,7 @@ const QUESTIONS = [
 	{ prompt: "Cromossomos homologos sao identicos em tudo.", answer: "falso", type: "verdadeiro_falso" },
 	{ prompt: "A mitose reduz o numero de cromossomos pela metade.", answer: "falso", type: "verdadeiro_falso" },
 
+	// Fase de perguntas especiais
 	{ prompt: "Qual processo troca segmentos geneticos? a) mitose b) crossing-over c) clonagem d) replicacao", answer: "b", type: "especial" },
 	{ prompt: "Qual divisao reduz cromossomos? a) mitose b) meiose i c) meiose ii d) interfase", answer: "b", type: "especial" },
 	{ prompt: "Qual divisao separa cromatides irmas na meiose? a) meiose i b) meiose ii c) profase d) interfase", answer: "b", type: "especial" },

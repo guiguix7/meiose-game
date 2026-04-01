@@ -16,6 +16,9 @@
                 <h1>Partida - <strong id="cronometro">00:00</strong></h1>
                 <p id="turn-text" class="subtitle"></p>
             </div>
+            <div>
+                <button id="rules-btn" class="btn" type="button">Como Jogar</button>
+            </div>
             <div class="dice-box">
                 <p id="dice-text" class="subtitle">Dados: -</p>
                 <button id="roll-btn" class="btn primary" type="button">Rolar Dados</button>
@@ -71,12 +74,54 @@
     <footer>
         <p>Guilherme Pereira - Victor Volpi - Davi Gato - Pedro AIlton - Caio Regio - Enzo Ovidio - 2ºDS</p>
     </footer>
+
+    <div id="rules-modal" class="modal hidden">
+        <div class="modal-card rules-card">
+            <div class="rules-header">
+                <h1 class="page-title">Instruções</h1>
+                <button id="close-rules-btn" class="btn" type="button">Fechar</button>
+            </div>
+                <p class="page-subtitle">Regras e instrucoes para jogar o Meiose Quest.</p>
+
+                <div class="select-players">
+                    <div class="info-card">
+                        <strong>Objetivo</strong>
+                        <span>Ser o primeiro jogador a alcancar 20 pontos.</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>Configuracao inicial</strong>
+                        <span>Selecione de 1 a 6 jogadores e informe nome e cor unicos.</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>Turno do jogador</strong>
+                        <span>Role os dados, avance pelas casas e responda as perguntas.</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>Pontuacao</strong>
+                        <span>Acerto soma pontos conforme o tipo; erro reduz 1 ponto.</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>Dados iguais</strong>
+                        <span>Se acertar com dados iguais, ganha um turno extra.</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>Casas especiais</strong>
+                        <span>Crossing-over troca posicao, mutacao tira 2 pontos e divisao da turno extra.</span>
+                    </div>
+                    <div class="info-card">
+                        <strong>Fim de jogo</strong>
+                        <span>Ganha quem fizer 20 pontos ou quem tiver maior pontuacao ao acabar as perguntas.</span>
+                    </div>
+                </div>
+        </div>
+    </div>
+
     <div id="question-modal" class="modal hidden">
         <div class="modal-card">
             <h3>Pergunta</h3>
             <p id="question-prompt"></p>
-            <input id="answer-input" type="text" placeholder="Digite sua resposta" maxlength="80" />
-            <fieldset id="answer-options" class="answer-options hidden" aria-label="Alternativas da pergunta"></fieldset>
+            <fieldset id="answer-options" class="answer-options hidden" aria-label="Alternativas da pergunta">
+            </fieldset>
             <button id="submit-answer" class="btn primary" type="button">Confirmar</button>
             <p id="feedback" class="feedback"></p>
         </div>

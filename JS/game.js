@@ -57,11 +57,13 @@ const gameState = {
     turnTextElement: document.getElementById("turn-text"),
     diceTextElement: document.getElementById("dice-text"),
     rollButtonElement: document.getElementById("roll-btn"),
+    rulesButtonElement: document.getElementById("rules-btn"),
+    rulesModalElement: document.getElementById("rules-modal"),
+    closeRulesButtonElement: document.getElementById("close-rules-btn"),
     endGameButtonElement: document.getElementById("end-game-btn"),
     timerElement: document.getElementById("cronometro"),
     questionModalElement: document.getElementById("question-modal"),
     questionPromptElement: document.getElementById("question-prompt"),
-    answerInputElement: document.getElementById("answer-input"),
     answerOptionsElement: document.getElementById("answer-options"),
     feedbackElement: document.getElementById("feedback"),
     submitAnswerButtonElement: document.getElementById("submit-answer")
@@ -120,14 +122,30 @@ function bindGameEvents() {
     gameState.rollButtonElement.addEventListener("click", handleRollTurn);
     gameState.submitAnswerButtonElement.addEventListener("click", handleAnswerSubmit);
     gameState.endGameButtonElement.addEventListener("click", handleEndGameClick);
+    gameState.rulesButtonElement.addEventListener("click", openRulesModal);
+    gameState.closeRulesButtonElement.addEventListener("click", closeRulesModal);
 
-    gameState.answerInputElement.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !isCurrentQuestionChoiceBased()) {
-            handleAnswerSubmit();
+    gameState.rulesModalElement.addEventListener("click", (event) => {
+        if (event.target === gameState.rulesModalElement) {
+            closeRulesModal();
+        }
+    });
+
+    window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeRulesModal();
         }
     });
 
     window.addEventListener("resize", updateAllTokensPosition);
+}
+
+function openRulesModal() {
+    gameState.rulesModalElement.classList.remove("hidden");
+}
+
+function closeRulesModal() {
+    gameState.rulesModalElement.classList.add("hidden");
 }
 
 function buildBoard() {
@@ -319,18 +337,13 @@ function askQuestionForCurrentPlayer() {
     const forcedType = getQuestionTypeFromHouse(currentPlayer.position);
     const selectedQuestionIndex = drawQuestionIndex(forcedType);
     gameState.currentQuestion = QUESTIONS[selectedQuestionIndex];
-    gameState.currentQuestionType = forcedType || getQuestionType(gameState.currentQuestion);
+    gameState.currentQuestionType = getQuestionType(gameState.currentQuestion);
     gameState.pendingSpecial = getHouseType(currentPlayer.position);
 
     gameState.questionPromptElement.textContent = getQuestionPromptText(gameState.currentQuestion);
     gameState.feedbackElement.textContent = "";
-    gameState.answerInputElement.value = "";
     renderAnswerFields(gameState.currentQuestion, gameState.currentQuestionType);
     gameState.questionModalElement.classList.remove("hidden");
-
-    if (!isCurrentQuestionChoiceBased()) {
-        gameState.answerInputElement.focus();
-    }
 }
 
 function getQuestionTypeFromHouse(position) {
@@ -402,23 +415,18 @@ function handleAnswerSubmit() {
 }
 
 function clearQuestionUI() {
-    gameState.answerInputElement.value = "";
     gameState.answerOptionsElement.innerHTML = "";
     gameState.answerOptionsElement.classList.add("hidden");
-    gameState.answerInputElement.classList.remove("hidden");
 }
 
 function renderAnswerFields(question, questionType) {
-    const shouldUseChoice = questionType === "multipla_escolha" || questionType === "verdadeiro_falso";
+    const shouldUseChoice = questionUsesAlternatives(question, questionType);
     gameState.answerOptionsElement.innerHTML = "";
 
     if (!shouldUseChoice) {
-        gameState.answerOptionsElement.classList.add("hidden");
-        gameState.answerInputElement.classList.remove("hidden");
         return;
     }
 
-    gameState.answerInputElement.classList.add("hidden");
     gameState.answerOptionsElement.classList.remove("hidden");
 
     const options = questionType === "verdadeiro_falso"
@@ -445,6 +453,15 @@ function renderAnswerFields(question, questionType) {
         label.appendChild(text);
         gameState.answerOptionsElement.appendChild(label);
     }
+}
+
+function questionUsesAlternatives(question, questionType) {
+    if (questionType === "verdadeiro_falso") {
+        return true;
+    }
+
+    const promptText = String(question?.prompt || "").toLowerCase();
+    return /\ba\)\s*.+\bb\)\s*.+/s.test(promptText);
 }
 
 function buildMultipleChoiceOptions(promptText) {
@@ -481,16 +498,8 @@ function getQuestionPromptText(question) {
 }
 
 function getCurrentAnswerValue() {
-    if (!isCurrentQuestionChoiceBased()) {
-        return gameState.answerInputElement.value;
-    }
-
     const selected = gameState.answerOptionsElement.querySelector('input[type="radio"]:checked');
     return selected ? selected.value : "";
-}
-
-function isCurrentQuestionChoiceBased() {
-    return gameState.currentQuestionType === "multipla_escolha" || gameState.currentQuestionType === "verdadeiro_falso";
 }
 
 function normalizeText(text) {
@@ -528,7 +537,7 @@ function applySpecialHouseEffect(player) {
 
     if (type === "divisao") {
         player.extraTurn = true;
-        logEvent(`${player.name} caiu em Divisao Celular e jogara novamente.`);
+        logEvent(`${player.name} caiu em Divisao Celular e jogará novamente.`);
     }
 
     updateScoreboard();
@@ -631,6 +640,11 @@ function getQuestionType(question) {
         return normalizedType;
     }
 
+    const normalizedAnswer = normalizeText(question.answer || "");
+    if (normalizedAnswer === "verdadeiro" || normalizedAnswer === "falso") {
+        return "verdadeiro_falso";
+    }
+
     const promptText = normalizeText(question.prompt || "");
     if (promptText.includes("verdadeiro ou falso")) {
         return "verdadeiro_falso";
@@ -644,7 +658,14 @@ function normalizeQuestionType(type) {
         return null;
     }
 
-    const value = normalizeText(String(type)).replace(/\s+/g, "_");
+    const value = String(type)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9_\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "_");
+
     const aliases = {
         facil: "facil",
         media: "media",
@@ -653,6 +674,7 @@ function normalizeQuestionType(type) {
         multipla: "multipla_escolha",
         verdadeiro_ou_falso: "verdadeiro_falso",
         verdadeiro_falso: "verdadeiro_falso",
+        verdadeirofalso: "verdadeiro_falso",
         vf: "verdadeiro_falso",
         especial: "especial"
     };
