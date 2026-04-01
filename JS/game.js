@@ -28,11 +28,13 @@ const MEIOSIS_PHASES = {
 };
 
 const SPECIAL_HOUSES = {
-    crossing: new Set([8, 19, 36, 52]),
-    mutacao: new Set([12, 27, 44, 60]),
+    crossing: new Set([8, 19, 46, 50]),
+    mutacao: new Set([12, 27, 44, 54]),
     divisao: new Set([5, 22, 40, 58])
 };
 
+// Central state for the active match.
+// Keep all mutable game data here to simplify future refactors.
 const gameState = {
     players: [],
     currentPlayerIndex: 0,
@@ -77,6 +79,7 @@ const gameState = {
 
 initializeGame();
 
+// Entry point for match setup and initial render.
 function initializeGame() {
     if (typeof QUESTIONS === "undefined" || !Array.isArray(QUESTIONS) || QUESTIONS.length === 0) {
         alert("As perguntas nao foram carregadas. Verifique JS/questions.js.");
@@ -113,6 +116,7 @@ function initializeGame() {
     }
 
     bindGameEvents();
+    // Index list ensures each question is asked at most once.
     gameState.remainingQuestionIndexes = QUESTIONS.map((_, index) => index);
     assignQuestionHouses();
     buildBoard();
@@ -121,9 +125,10 @@ function initializeGame() {
     updateTurnUI();
     updateScoreboard();
     startMatchTimer();
-    logEvent("Jogo iniciado! Boa sorte na jornada da meiose.");
+    logEvent("Jogo iniciado! Boa sorte.");
 }
 
+// Registers all UI event listeners used during the match.
 function bindGameEvents() {
     gameState.rollButtonElement.addEventListener("click", handleRollTurn);
     gameState.submitAnswerButtonElement.addEventListener("click", handleAnswerSubmit);
@@ -155,6 +160,7 @@ function closeRulesModal() {
     gameState.rulesModalElement.classList.add("hidden");
 }
 
+// Creates the 64 houses and applies visual tags for question and special types.
 function buildBoard() {
     gameState.houses = [];
     gameState.boardElement.innerHTML = "";
@@ -216,6 +222,8 @@ function getHouseType(index) {
     return "normal";
 }
 
+// Splits normal houses between V/F and standard alternative questions.
+// Special and phase houses are excluded from this distribution.
 function assignQuestionHouses() {
     const availableHouses = [];
 
@@ -279,6 +287,7 @@ function positionToken(player) {
     player.token.style.top = `${centerY + offsetY}px`;
 }
 
+// Main turn action: roll dice, animate movement, then ask question.
 async function handleRollTurn() {
     if (gameState.gameEnded || gameState.isRollingLocked) {
         return;
@@ -331,6 +340,7 @@ function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Draws and displays the next question for the active player.
 function askQuestionForCurrentPlayer() {
     if (gameState.remainingQuestionIndexes.length === 0) {
         endGameByQuestionLimit();
@@ -351,6 +361,10 @@ function askQuestionForCurrentPlayer() {
     gameState.questionModalElement.classList.remove("hidden");
 }
 
+// Determines the expected question pool by house type.
+// - special houses -> special questions
+// - VF houses -> true/false questions
+// - normal houses -> easy/medium/hard/multiple-choice
 function getQuestionTypeFromHouse(position) {
     const houseType = getHouseType(position);
     if (houseType !== "normal") {
@@ -368,6 +382,8 @@ function getQuestionTypeFromHouse(position) {
     return null;
 }
 
+// Draws one question index from the remaining pool.
+// Selected index is removed to prevent repetition.
 function drawQuestionIndex(forcedType) {
     let pool = gameState.remainingQuestionIndexes;
 
@@ -396,6 +412,7 @@ function drawQuestionIndex(forcedType) {
     return selectedQuestionIndex;
 }
 
+// Validates answer, applies score changes, then advances turn.
 function handleAnswerSubmit() {
     if (gameState.gameEnded || !gameState.currentQuestion) {
         return;
@@ -443,6 +460,7 @@ function clearQuestionUI() {
     gameState.answerOptionsElement.classList.add("hidden");
 }
 
+// Renders answer options as radio buttons based on question type.
 function renderAnswerFields(question, questionType) {
     const shouldUseChoice = questionUsesAlternatives(question, questionType);
     gameState.answerOptionsElement.innerHTML = "";
@@ -516,6 +534,7 @@ function buildMultipleChoiceOptions(promptText) {
     return values.map((value) => options.find((option) => option.value === value));
 }
 
+// Removes inline alternatives from prompt text to keep the modal readable.
 function getQuestionPromptText(question) {
     const promptText = String(question.prompt || "").trim();
     return promptText.replace(/\s*[a-d]\)\s*[\s\S]*?(?=\s+[a-d]\)\s*|$)/gi, "").trim();
@@ -536,6 +555,7 @@ function normalizeText(text) {
         .trim();
 }
 
+// Applies board-side effects after answering (crossing, mutacao, divisao).
 function applySpecialHouseEffect(player) {
     const type = gameState.pendingSpecial;
     gameState.pendingSpecial = null;
@@ -567,6 +587,7 @@ function applySpecialHouseEffect(player) {
     updateScoreboard();
 }
 
+// Finalizes the turn and resolves win or next-player state.
 function finalizeTurn() {
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
 
@@ -623,6 +644,7 @@ function logEvent(message) {
     }
 }
 
+// Ends by score threshold and shows winner modal with timed redirect.
 function endGame(winner) {
     gameState.gameEnded = true;
     gameState.isRollingLocked = true;
@@ -658,6 +680,7 @@ function applyCorrectAnswerReward(player, questionType) {
     return `Resposta correta! +${points} ponto${points > 1 ? "s" : ""}.`;
 }
 
+// Normalizes external question type values to internal canonical keys.
 function getQuestionType(question) {
     const normalizedType = normalizeQuestionType(question.type);
     if (normalizedType) {
@@ -732,6 +755,7 @@ function formatQuestionTypeLabel(type) {
     return labels[type] || "Facil";
 }
 
+// Ends by exhaustion of question pool and resolves tie-break logic.
 function endGameByQuestionLimit() {
     const winner = resolveWinnerByPoints();
     if (!winner) {
@@ -772,6 +796,7 @@ function updateTimerUI() {
     gameState.timerElement.textContent = `${minutes}:${seconds}`;
 }
 
+// Manual early exit action from "Encerrar Partida" button.
 function handleEndGameClick() {
     if (gameState.gameEnded) {
         return;
@@ -787,6 +812,7 @@ function handleEndGameClick() {
     window.location.href = "index.html";
 }
 
+// Winner screen shown before redirecting back to the home page.
 function showWinnerModal(title, message) {
     if (gameState.winnerRedirectTimeoutId !== null) {
         window.clearTimeout(gameState.winnerRedirectTimeoutId);
@@ -812,6 +838,7 @@ function redirectToHome() {
     window.location.href = "index.html";
 }
 
+// If tied by score, last player to answer correctly wins.
 function resolveWinnerByPoints() {
     if (gameState.players.length === 0) {
         return null;
