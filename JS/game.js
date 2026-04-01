@@ -1,8 +1,10 @@
-const HOUSE_COUNT = 63;
+const HOUSE_COUNT = 64;
 const START_POINTS = 10;
 const WIN_POINTS = 20;
 const WRONG_ANSWER_POINTS = -1;
 const SPECIAL_STEAL_POINTS = 5;
+const MULTIPLE_CHOICE_HOUSES_COUNT = 10;
+const TRUE_FALSE_HOUSES_COUNT = 10;
 
 const QUESTION_REWARDS = {
     facil: 1,
@@ -14,15 +16,15 @@ const QUESTION_REWARDS = {
 
 const MEIOSIS_PHASES = {
     1: "Inicio",
-    5: "Interfase",
-    12: "Profase I",
+    4: "Interfase",
+    13: "Profase I",
     20: "Metafase I",
-    28: "Anafase I",
+    29: "Anafase I",
     36: "Telofase I",
-    44: "Profase II",
+    45: "Profase II",
     52: "Metafase II",
-    60: "Anafase II",
-    63: "Telofase II"
+    61: "Anafase II",
+    64: "Telofase II"
 };
 
 const SPECIAL_HOUSES = {
@@ -42,6 +44,10 @@ const gameState = {
     pendingDoubleRollBonus: false,
     remainingQuestionIndexes: [],
     lastCorrectPlayerId: null,
+    questionHouses: {
+        multipla: new Set(),
+        verdadeiroFalso: new Set()
+    },
     houses: [],
     boardElement: document.getElementById("board"),
     scoreListElement: document.getElementById("score-list"),
@@ -74,7 +80,7 @@ function initializeGame() {
 
     try {
         const parsedPlayers = JSON.parse(savedPlayers);
-        if (!Array.isArray(parsedPlayers) || parsedPlayers.length < 2) {
+        if (!Array.isArray(parsedPlayers) || parsedPlayers.length < 1) {
             throw new Error("Jogadores invalidos");
         }
 
@@ -95,6 +101,7 @@ function initializeGame() {
 
     bindGameEvents();
     gameState.remainingQuestionIndexes = QUESTIONS.map((_, index) => index);
+    assignQuestionHouses();
     buildBoard();
     createPlayerTokens();
     updateAllTokensPosition();
@@ -123,6 +130,14 @@ function buildBoard() {
     for (let i = 1; i <= HOUSE_COUNT; i += 1) {
         const house = document.createElement("div");
         house.className = `cell house ${getHouseType(i)}`;
+
+        if (gameState.questionHouses.multipla.has(i)) {
+            house.classList.add("question-multipla");
+            house.setAttribute("title", "Questao de multipla escolha");
+        } else if (gameState.questionHouses.verdadeiroFalso.has(i)) {
+            house.classList.add("question-vf");
+            house.setAttribute("title", "Questao de verdadeiro ou falso");
+        }
 
         if (i === 1) {
             house.classList.add("start");
@@ -158,6 +173,34 @@ function getHouseType(index) {
     }
 
     return "normal";
+}
+
+function assignQuestionHouses() {
+    const availableHouses = [];
+
+    for (let i = 1; i <= HOUSE_COUNT; i += 1) {
+        if (getHouseType(i) !== "normal") {
+            continue;
+        }
+
+        if (MEIOSIS_PHASES[i]) {
+            continue;
+        }
+
+        availableHouses.push(i);
+    }
+
+    shuffleArray(availableHouses);
+    const totalNeeded = MULTIPLE_CHOICE_HOUSES_COUNT + TRUE_FALSE_HOUSES_COUNT;
+    const totalAvailable = availableHouses.length;
+    const maxSelectable = Math.min(totalNeeded, totalAvailable);
+    const multiplaCount = Math.min(MULTIPLE_CHOICE_HOUSES_COUNT, maxSelectable);
+    const vfCount = Math.min(TRUE_FALSE_HOUSES_COUNT, maxSelectable - multiplaCount);
+
+    gameState.questionHouses.multipla = new Set(availableHouses.slice(0, multiplaCount));
+    gameState.questionHouses.verdadeiroFalso = new Set(
+        availableHouses.slice(multiplaCount, multiplaCount + vfCount)
+    );
 }
 
 function createPlayerTokens() {
@@ -239,6 +282,13 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function shuffleArray(list) {
+    for (let i = list.length - 1; i > 0; i -= 1) {
+        const swapIndex = randomInt(0, i);
+        [list[i], list[swapIndex]] = [list[swapIndex], list[i]];
+    }
+}
+
 function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -250,10 +300,10 @@ function askQuestionForCurrentPlayer() {
     }
 
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
-    const randomPoolIndex = randomInt(0, gameState.remainingQuestionIndexes.length - 1);
-    const selectedQuestionIndex = gameState.remainingQuestionIndexes.splice(randomPoolIndex, 1)[0];
+    const forcedType = getQuestionTypeFromHouse(currentPlayer.position);
+    const selectedQuestionIndex = drawQuestionIndex(forcedType);
     gameState.currentQuestion = QUESTIONS[selectedQuestionIndex];
-    gameState.currentQuestionType = getQuestionType(gameState.currentQuestion);
+    gameState.currentQuestionType = forcedType || getQuestionType(gameState.currentQuestion);
     gameState.pendingSpecial = getHouseType(currentPlayer.position);
 
     gameState.questionPromptElement.textContent = gameState.currentQuestion.prompt;
@@ -261,6 +311,38 @@ function askQuestionForCurrentPlayer() {
     gameState.answerInputElement.value = "";
     gameState.questionModalElement.classList.remove("hidden");
     gameState.answerInputElement.focus();
+}
+
+function getQuestionTypeFromHouse(position) {
+    if (gameState.questionHouses.multipla.has(position)) {
+        return "multipla_escolha";
+    }
+
+    if (gameState.questionHouses.verdadeiroFalso.has(position)) {
+        return "verdadeiro_falso";
+    }
+
+    return null;
+}
+
+function drawQuestionIndex(forcedType) {
+    let pool = gameState.remainingQuestionIndexes;
+
+    if (forcedType) {
+        const filtered = pool.filter((index) => getQuestionType(QUESTIONS[index]) === forcedType);
+        if (filtered.length > 0) {
+            pool = filtered;
+        }
+    }
+
+    const randomPoolIndex = randomInt(0, pool.length - 1);
+    const selectedQuestionIndex = pool[randomPoolIndex];
+    const removeIndex = gameState.remainingQuestionIndexes.indexOf(selectedQuestionIndex);
+    if (removeIndex >= 0) {
+        gameState.remainingQuestionIndexes.splice(removeIndex, 1);
+    }
+
+    return selectedQuestionIndex;
 }
 
 function handleAnswerSubmit() {
@@ -314,12 +396,16 @@ function applySpecialHouseEffect(player) {
 
     if (type === "crossing") {
         const others = gameState.players.filter((p) => p.id !== player.id);
-        const target = others[randomInt(0, others.length - 1)];
-        const oldPos = player.position;
-        player.position = target.position;
-        target.position = oldPos;
-        updateAllTokensPosition();
-        logEvent(`${player.name} caiu em Crossing-over e trocou de posicao com ${target.name}.`);
+        if (others.length === 0) {
+            logEvent(`${player.name} caiu em Crossing-over, mas nao ha outro jogador para trocar.`);
+        } else {
+            const target = others[randomInt(0, others.length - 1)];
+            const oldPos = player.position;
+            player.position = target.position;
+            target.position = oldPos;
+            updateAllTokensPosition();
+            logEvent(`${player.name} caiu em Crossing-over e trocou de posicao com ${target.name}.`);
+        }
     }
 
     if (type === "mutacao") {

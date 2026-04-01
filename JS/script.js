@@ -57,8 +57,8 @@ function getSelectedPlayerCount() {
 
 function startGameFromSetup() {
     const playerCount = getSelectedPlayerCount();
-    if (playerCount < 2 || playerCount > 6) {
-        alert("Selecione a quantidade de jogadores (2 a 6) para iniciar.");
+    if (playerCount < 1 || playerCount > 6) {
+        alert("Selecione a quantidade de jogadores (1 a 6) para iniciar.");
         return;
     }
 

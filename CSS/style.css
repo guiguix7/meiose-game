@@ -111,6 +111,24 @@ body {
 	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
+.info-card {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 12px;
+	margin: 0;
+	border: 2px solid #d8e7f2;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #fbfeff, #f5fbff);
+	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.info-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 9px 18px rgba(19, 50, 74, 0.09);
+	border-color: #b8d6ea;
+}
+
 .select-players label:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 9px 18px rgba(19, 50, 74, 0.09);
