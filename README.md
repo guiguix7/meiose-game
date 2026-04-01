@@ -57,3 +57,23 @@ Ser o primeiro jogador a alcançar 20 pontos.
 - [ ] Rolar os dados no turno correto.
 - [ ] Responder a pergunta e confirmar.
 - [ ] Conferir pontuacao e eventos na tela.
+
+
+====================================================
+
+Mostrar placeholder (explicacao basica) quando colocar o mouse em cima da legenda
+
+Melhor identificacao das casas (normais, verdadeiro ou falso, alternativa, especiais etc.)
+
+As questoes de alternativa devem ter radio buttons com 4 alternativas (a, b, c e d)
+
+As questoes de verdadeiro ou falso devem ter radio buttons com 2 alternativas (verdadeiro e falso)
+
+Remover o botao "Iniciar Jogo" quando o botao de "Comecar Partida" aparecer [index.html]
+
+Adicionar um cronometro no jogo
+
+Adicionar um botao de terminar o jogo e voltar ao inicio
+
+Corrigir os erros de ortografia em todo o projeto
+

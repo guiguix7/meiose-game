@@ -42,6 +42,8 @@ const gameState = {
     currentQuestion: null,
     currentQuestionType: "facil",
     pendingDoubleRollBonus: false,
+    timerSeconds: 0,
+    timerIntervalId: null,
     remainingQuestionIndexes: [],
     lastCorrectPlayerId: null,
     questionHouses: {
@@ -55,9 +57,12 @@ const gameState = {
     turnTextElement: document.getElementById("turn-text"),
     diceTextElement: document.getElementById("dice-text"),
     rollButtonElement: document.getElementById("roll-btn"),
+    endGameButtonElement: document.getElementById("end-game-btn"),
+    timerElement: document.getElementById("cronometro"),
     questionModalElement: document.getElementById("question-modal"),
     questionPromptElement: document.getElementById("question-prompt"),
     answerInputElement: document.getElementById("answer-input"),
+    answerOptionsElement: document.getElementById("answer-options"),
     feedbackElement: document.getElementById("feedback"),
     submitAnswerButtonElement: document.getElementById("submit-answer")
 };
@@ -107,15 +112,17 @@ function initializeGame() {
     updateAllTokensPosition();
     updateTurnUI();
     updateScoreboard();
+    startMatchTimer();
     logEvent("Jogo iniciado! Boa sorte na jornada da meiose.");
 }
 
 function bindGameEvents() {
     gameState.rollButtonElement.addEventListener("click", handleRollTurn);
     gameState.submitAnswerButtonElement.addEventListener("click", handleAnswerSubmit);
+    gameState.endGameButtonElement.addEventListener("click", handleEndGameClick);
 
     gameState.answerInputElement.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && !isCurrentQuestionChoiceBased()) {
             handleAnswerSubmit();
         }
     });
@@ -134,9 +141,11 @@ function buildBoard() {
         if (gameState.questionHouses.multipla.has(i)) {
             house.classList.add("question-multipla");
             house.setAttribute("title", "Questao de multipla escolha");
+            appendHouseTag(house, "ABCD");
         } else if (gameState.questionHouses.verdadeiroFalso.has(i)) {
             house.classList.add("question-vf");
             house.setAttribute("title", "Questao de verdadeiro ou falso");
+            appendHouseTag(house, "V/F");
         }
 
         if (i === 1) {
@@ -157,6 +166,13 @@ function buildBoard() {
         gameState.houses.push({ index: i, element: house });
         gameState.boardElement.appendChild(house);
     }
+}
+
+function appendHouseTag(houseElement, label) {
+    const tag = document.createElement("span");
+    tag.className = "house-tag";
+    tag.textContent = label;
+    houseElement.appendChild(tag);
 }
 
 function getHouseType(index) {
@@ -306,11 +322,15 @@ function askQuestionForCurrentPlayer() {
     gameState.currentQuestionType = forcedType || getQuestionType(gameState.currentQuestion);
     gameState.pendingSpecial = getHouseType(currentPlayer.position);
 
-    gameState.questionPromptElement.textContent = gameState.currentQuestion.prompt;
+    gameState.questionPromptElement.textContent = getQuestionPromptText(gameState.currentQuestion);
     gameState.feedbackElement.textContent = "";
     gameState.answerInputElement.value = "";
+    renderAnswerFields(gameState.currentQuestion, gameState.currentQuestionType);
     gameState.questionModalElement.classList.remove("hidden");
-    gameState.answerInputElement.focus();
+
+    if (!isCurrentQuestionChoiceBased()) {
+        gameState.answerInputElement.focus();
+    }
 }
 
 function getQuestionTypeFromHouse(position) {
@@ -351,7 +371,7 @@ function handleAnswerSubmit() {
     }
 
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
-    const userAnswer = normalizeText(gameState.answerInputElement.value);
+    const userAnswer = normalizeText(getCurrentAnswerValue());
     const expectedAnswer = normalizeText(gameState.currentQuestion.answer);
     const isCorrect = userAnswer.length > 0 && userAnswer === expectedAnswer;
 
@@ -375,9 +395,102 @@ function handleAnswerSubmit() {
 
     setTimeout(() => {
         gameState.questionModalElement.classList.add("hidden");
+        clearQuestionUI();
         applySpecialHouseEffect(currentPlayer);
         finalizeTurn();
     }, 900);
+}
+
+function clearQuestionUI() {
+    gameState.answerInputElement.value = "";
+    gameState.answerOptionsElement.innerHTML = "";
+    gameState.answerOptionsElement.classList.add("hidden");
+    gameState.answerInputElement.classList.remove("hidden");
+}
+
+function renderAnswerFields(question, questionType) {
+    const shouldUseChoice = questionType === "multipla_escolha" || questionType === "verdadeiro_falso";
+    gameState.answerOptionsElement.innerHTML = "";
+
+    if (!shouldUseChoice) {
+        gameState.answerOptionsElement.classList.add("hidden");
+        gameState.answerInputElement.classList.remove("hidden");
+        return;
+    }
+
+    gameState.answerInputElement.classList.add("hidden");
+    gameState.answerOptionsElement.classList.remove("hidden");
+
+    const options = questionType === "verdadeiro_falso"
+        ? [
+            { value: "verdadeiro", label: "Verdadeiro" },
+            { value: "falso", label: "Falso" }
+        ]
+        : buildMultipleChoiceOptions(question.prompt);
+
+    const groupName = `answer-option-${Date.now()}`;
+    for (const option of options) {
+        const label = document.createElement("label");
+        label.className = "answer-option-item";
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = groupName;
+        input.value = option.value;
+
+        const text = document.createElement("span");
+        text.textContent = option.label;
+
+        label.appendChild(input);
+        label.appendChild(text);
+        gameState.answerOptionsElement.appendChild(label);
+    }
+}
+
+function buildMultipleChoiceOptions(promptText) {
+    const normalizedPrompt = String(promptText || "");
+    const optionMatches = [...normalizedPrompt.matchAll(/([a-d])\)\s*([\s\S]*?)(?=\s+[a-d]\)\s*|$)/gi)];
+    const options = [];
+
+    for (const match of optionMatches) {
+        const value = (match[1] || "").toLowerCase();
+        const text = (match[2] || "").trim();
+        options.push({ value, label: `${value.toUpperCase()}) ${text || "Alternativa"}` });
+    }
+
+    const fallbackLabels = {
+        a: "A) Alternativa A",
+        b: "B) Alternativa B",
+        c: "C) Alternativa C",
+        d: "D) Alternativa D"
+    };
+
+    const values = ["a", "b", "c", "d"];
+    for (const value of values) {
+        if (!options.some((option) => option.value === value)) {
+            options.push({ value, label: fallbackLabels[value] });
+        }
+    }
+
+    return values.map((value) => options.find((option) => option.value === value));
+}
+
+function getQuestionPromptText(question) {
+    const promptText = String(question.prompt || "").trim();
+    return promptText.replace(/\s*[a-d]\)\s*[\s\S]*?(?=\s+[a-d]\)\s*|$)/gi, "").trim();
+}
+
+function getCurrentAnswerValue() {
+    if (!isCurrentQuestionChoiceBased()) {
+        return gameState.answerInputElement.value;
+    }
+
+    const selected = gameState.answerOptionsElement.querySelector('input[type="radio"]:checked');
+    return selected ? selected.value : "";
+}
+
+function isCurrentQuestionChoiceBased() {
+    return gameState.currentQuestionType === "multipla_escolha" || gameState.currentQuestionType === "verdadeiro_falso";
 }
 
 function normalizeText(text) {
@@ -481,6 +594,8 @@ function endGame(winner) {
     gameState.gameEnded = true;
     gameState.isRollingLocked = true;
     gameState.rollButtonElement.disabled = true;
+    gameState.endGameButtonElement.disabled = true;
+    stopMatchTimer();
     gameState.turnTextElement.textContent = `Fim de jogo! ${winner.name} venceu com ${winner.points} pontos.`;
     logEvent(`Vitoria de ${winner.name} ao atingir ${winner.points} pontos.`);
     alert(`Fim de jogo! ${winner.name} venceu com ${winner.points} pontos.`);
@@ -567,10 +682,50 @@ function endGameByQuestionLimit() {
     gameState.gameEnded = true;
     gameState.isRollingLocked = true;
     gameState.rollButtonElement.disabled = true;
+    gameState.endGameButtonElement.disabled = true;
+    stopMatchTimer();
 
     gameState.turnTextElement.textContent = `Fim das perguntas! ${winner.name} venceu com ${winner.points} pontos.`;
     logEvent(`Fim das perguntas. Vencedor: ${winner.name} com ${winner.points} pontos.`);
     alert(`Fim das perguntas! ${winner.name} venceu com ${winner.points} pontos.`);
+}
+
+function startMatchTimer() {
+    stopMatchTimer();
+    gameState.timerSeconds = 0;
+    updateTimerUI();
+    gameState.timerIntervalId = window.setInterval(() => {
+        gameState.timerSeconds += 1;
+        updateTimerUI();
+    }, 1000);
+}
+
+function stopMatchTimer() {
+    if (gameState.timerIntervalId !== null) {
+        window.clearInterval(gameState.timerIntervalId);
+        gameState.timerIntervalId = null;
+    }
+}
+
+function updateTimerUI() {
+    const minutes = String(Math.floor(gameState.timerSeconds / 60)).padStart(2, "0");
+    const seconds = String(gameState.timerSeconds % 60).padStart(2, "0");
+    gameState.timerElement.textContent = `${minutes}:${seconds}`;
+}
+
+function handleEndGameClick() {
+    if (gameState.gameEnded) {
+        return;
+    }
+
+    const shouldLeave = window.confirm("Deseja encerrar a partida e voltar para a tela inicial?");
+    if (!shouldLeave) {
+        return;
+    }
+
+    stopMatchTimer();
+    sessionStorage.removeItem("meiose-players");
+    window.location.href = "index.html";
 }
 
 function resolveWinnerByPoints() {

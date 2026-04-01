@@ -25,6 +25,7 @@ function setupSelectionEvents() {
             if (setup.playerConfigPanel) {
                 setup.playerConfigPanel.remove();
                 setup.playerConfigPanel = null;
+                setup.startButton.classList.remove("hidden");
             }
 
             updateSelectionVisualState();
@@ -76,9 +77,10 @@ function showPlayerConfigPanel(playerCount) {
         <h2 class="config-title">Dados dos Jogadores</h2>
         <p class="config-subtitle">Informe nome e escolha a cor de cada jogador.</p>
         <div class="name-grid" id="player-config-grid"></div>
-        <button id="confirm-players-btn" class="btn primary">Comecar Partida</button>
+        <button id="confirm-players-btn" class="btn primary">Começar Partida</button>
     `;
-    
+
+    setup.startButton.classList.add("hidden");
 
     setup.startButton.insertAdjacentElement("beforebegin", panel);
     setup.playerConfigPanel = panel;
@@ -111,6 +113,8 @@ function confirmPlayersAndStart(playerCount) {
         setup.playerConfigPanel.remove();
         setup.playerConfigPanel = null;
     }
+
+    setup.startButton.classList.remove("hidden");
 
     window.location.href = "game.html";
 }

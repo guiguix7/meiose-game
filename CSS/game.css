@@ -74,6 +74,12 @@ p {
 	transform: none;
 }
 
+.danger {
+	background: linear-gradient(140deg, #db4e4e, #b13333);
+	color: #fff;
+	margin-top: 8px;
+}
+
 .primary {
 	background: linear-gradient(140deg, #ff9a63, var(--accent));
 	color: #fff;
@@ -205,6 +211,20 @@ p {
 	justify-content: center;
 	position: relative;
 	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.house-tag {
+	position: absolute;
+	top: 3px;
+	left: 4px;
+	font-size: 0.58rem;
+	font-weight: 800;
+	line-height: 1;
+	padding: 2px 4px;
+	border-radius: 8px;
+	background: rgba(25, 50, 74, 0.13);
+	color: #0f2f47;
+	pointer-events: none;
 }
 
 
@@ -351,6 +371,33 @@ p {
 	padding: 10px 12px;
 	font-size: 1rem;
 	margin-bottom: 10px;
+}
+
+.answer-options {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 8px;
+	margin-bottom: 10px;
+	border: none;
+	padding: 0;
+	min-width: 0;
+}
+
+.answer-option-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	border: 2px solid #d3e4f1;
+	border-radius: 12px;
+	background: linear-gradient(140deg, #f9fdff, #f2f9ff);
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.answer-option-item input[type="radio"] {
+	accent-color: #2f9b6d;
+	flex-shrink: 0;
 }
 
 .feedback {
