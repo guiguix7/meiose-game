@@ -1,75 +1,79 @@
 const QUESTIONS = [
-	// Fase de perguntas fáceis
-	{ prompt: "Em qual fase os cromossomos se alinham no plano equatorial na mitose? a) profase b) metafase c) anafase d) telofase", answer: "b", type: "facil" },
-	{ prompt: "Qual processo gera duas celulas-filhas geneticamente identicas? a) meiose b) mitose c) fecundacao d) crossing-over", answer: "b", type: "facil" },
-	{ prompt: "A meiose possui quantas divisoes celulares principais? a) 1 b) 2 c) 3 d) 4", answer: "b", type: "facil" },
-	{ prompt: "Celulas somaticas se dividem principalmente por: a) meiose b) mitose c) fecundacao d) clonagem", answer: "b", type: "facil" },
-	{ prompt: "Gametas sao produzidos por: a) mitose b) meiose c) brotamento d) fragmentacao", answer: "b", type: "facil" },
-	{ prompt: "Qual estrutura une as cromatides irmas? a) centriolo b) ribossomo c) centromero d) nucleo", answer: "c", type: "facil" },
-	{ prompt: "Qual divisao celular forma quatro celulas-filhas? a) mitose b) meiose c) fecundacao d) clivagem", answer: "b", type: "facil" },
-	{ prompt: "Nome da fase em que a carioteca se desorganiza: a) telofase b) metafase c) profase d) interfase", answer: "c", type: "facil" },
-	{ prompt: "Em qual fase as cromatides irmas se separam na mitose? a) profase b) metafase c) anafase d) telofase", answer: "c", type: "facil" },
-	{ prompt: "O que e um gameta? a) celula somatica b) celula sexual c) celula nervosa d) celula-tronco", answer: "b", type: "facil" },
-	{ prompt: "O que e diploide? a) n b) 2n c) 3n d) 4n", answer: "b", type: "facil" },
-	{ prompt: "O que e haploide? a) n b) 2n c) 3n d) 4n", answer: "a", type: "facil" },
-	{ prompt: "A meiose produz quantas celulas-filhas? a) 2 b) 3 c) 4 d) 6", answer: "c", type: "facil" },
+	// MITOSE (32)
+
+	// fáceis
+	{ prompt: "Em qual fase da mitose os cromossomos se alinham no plano equatorial? a) profase b) metafase c) anafase d) telofase", answer: "b", type: "facil" },
+	{ prompt: "Qual processo gera duas celulas-filhas identicas? a) meiose b) mitose c) fecundacao d) crossing-over", answer: "b", type: "facil" },
+	{ prompt: "Celulas somaticas se dividem por: a) meiose b) mitose c) fecundacao d) clonagem", answer: "b", type: "facil" },
+	{ prompt: "Em qual fase as cromatides irmas se separam? a) profase b) metafase c) anafase d) telofase", answer: "c", type: "facil" },
 	{ prompt: "A mitose produz quantas celulas-filhas? a) 2 b) 3 c) 4 d) 8", answer: "a", type: "facil" },
-	{ prompt: "Qual fase antecede a profase? a) metafase b) interfase c) anafase d) telofase", answer: "b", type: "facil" },
-	{ prompt: "Qual e a funcao da meiose? a) crescimento b) reparo c) formar gametas d) digestao", answer: "c", type: "facil" },
 	{ prompt: "Em qual fase os cromossomos se condensam? a) telofase b) profase c) metafase d) interfase", answer: "b", type: "facil" },
 	{ prompt: "Qual fase sucede a anafase? a) profase b) interfase c) telofase d) metafase", answer: "c", type: "facil" },
-	{ prompt: "A uniao de dois gametas forma: a) embriao b) zigoto c) feto d) blastocisto", answer: "b", type: "facil" },
-	{ prompt: "Quantas cromatides tem um cromossomo duplicado? a) 1 b) 2 c) 3 d) 4", answer: "b", type: "facil" },
+	{ prompt: "Qual fase antecede a profase? a) metafase b) interfase c) anafase d) telofase", answer: "b", type: "facil" },
 
-	// Fase de perguntas médias
-	{ prompt: "Em qual etapa ocorre o crossing-over? a) profase i b) metafase i c) anafase ii d) telofase ii", answer: "a", type: "media" },
-	{ prompt: "Na meiose I, o que se separa primeiro? a) cromatides irmas b) cromossomos homologos c) nucleo d) ribossomos", answer: "b", type: "media" },
-	{ prompt: "Qual fase da meiose separa cromatides irmas? a) anafase i b) metafase ii c) anafase ii d) profase ii", answer: "c", type: "media" },
-	{ prompt: "Quantos cromossomos ha em um gameta humano? a) 46 b) 23 c) 92 d) 12", answer: "b", type: "media" },
-	{ prompt: "Quantos cromossomos ha em uma celula somatica humana? a) 23 b) 46 c) 92 d) 12", answer: "b", type: "media" },
-	{ prompt: "Qual fase finaliza a meiose I? a) telofase i b) profase i c) anafase i d) metafase i", answer: "a", type: "media" },
+	// médias
 	{ prompt: "Qual e a funcao do fuso mitotico? a) produzir energia b) separar cromossomos c) sintetizar proteinas d) duplicar DNA", answer: "b", type: "media" },
 	{ prompt: "A duplicacao do DNA ocorre em qual fase? a) profase b) metafase c) fase s d) telofase", answer: "c", type: "media" },
+	{ prompt: "Em qual fase a carioteca se reorganiza? a) profase b) metafase c) anafase d) telofase", answer: "d", type: "media" },
+	{ prompt: "Qual estrutura organiza o fuso? a) ribossomo b) centriolo c) nucleo d) lisossomo", answer: "b", type: "media" },
+	{ prompt: "Mitose mantem o numero de cromossomos? a) sim b) nao c) dobra d) reduz", answer: "a", type: "media" },
+	{ prompt: "Qual fase apresenta cromossomos mais visiveis? a) profase b) metafase c) anafase d) telofase", answer: "b", type: "media" },
 
-	// Fase de perguntas difíceis
-	{ prompt: "A variabilidade genetica vem do crossing-over e: a) mutacao b) segregacao independente c) mitose d) replicacao", answer: "b", type: "dificil" },
-	{ prompt: "A sinapse dos cromossomos ocorre em: a) profase i b) metafase ii c) anafase i d) telofase ii", answer: "a", type: "dificil" },
-	{ prompt: "O quiasma e observado em: a) profase i b) metafase i c) anafase ii d) telofase i", answer: "a", type: "dificil" },
-	{ prompt: "Cromossomos homologos sao: a) identicos b) diferentes genes c) genes para mesmas caracteristicas d) inexistentes", answer: "c", type: "dificil" },
-	{ prompt: "Qual e o cariotipo? a) tipo de celula b) conjunto de cromossomos c) divisao celular d) tipo de DNA", answer: "b", type: "dificil" },
-	{ prompt: "Quando ocorre a citocinese? a) inicio da divisao b) meio c) final da divisao d) antes da interfase", answer: "c", type: "dificil" },
+	// difíceis
+	{ prompt: "Qual processo ocorre durante a divisao do nucleo? a) citocinese b) cariocinese c) replicacao d) digestao", answer: "b", type: "dificil" },
+	{ prompt: "Mitose gera variabilidade genetica? a) sim b) nao c) as vezes d) depende", answer: "b", type: "dificil" },
+	{ prompt: "O fuso mitotico e formado por: a) lipideos b) microtubulos c) DNA d) agua", answer: "b", type: "dificil" },
+	{ prompt: "A citocinese ocorre em qual momento? a) inicio b) meio c) final d) antes da interfase", answer: "c", type: "dificil" },
 
-	// Fase de perguntas de verdadeiro ou falso
-	{ prompt: "A meiose reduz o numero de cromossomos pela metade.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "A variabilidade genetica aumenta com crossing-over.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "Mitose ocorre para formar gametas.", answer: "falso", type: "verdadeiro_falso" },
-	{ prompt: "Cromossomos homologos possuem genes semelhantes.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "A mitose e responsavel por crescimento e reparo.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "A meiose ocorre em celulas somaticas.", answer: "falso", type: "verdadeiro_falso" },
-	{ prompt: "A meiose gera variabilidade genetica.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "A meiose ocorre em duas divisoes celulares.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "Cromatides irmas se separam na meiose I.", answer: "falso", type: "verdadeiro_falso" },
+	// verdadeiro ou falso
 	{ prompt: "A mitose gera celulas identicas.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "Gametas sao formados por meiose.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "Na metafase os cromossomos se alinham.", answer: "verdadeiro", type: "verdadeiro_falso" },
+	{ prompt: "A mitose reduz o numero de cromossomos pela metade.", answer: "falso", type: "verdadeiro_falso" },
+	{ prompt: "A mitose ocorre em celulas somaticas.", answer: "verdadeiro", type: "verdadeiro_falso" },
+	{ prompt: "O fuso mitotico ajuda a separar cromossomos.", answer: "verdadeiro", type: "verdadeiro_falso" },
+	{ prompt: "O DNA se duplica na interfase.", answer: "verdadeiro", type: "verdadeiro_falso" },
+	{ prompt: "A citocinese separa o citoplasma.", answer: "verdadeiro", type: "verdadeiro_falso" },
+
+	// especiais
+	{ prompt: "Qual processo e essencial para crescimento? a) meiose b) mitose c) digestao d) respiracao", answer: "b", type: "especial" },
+	{ prompt: "Qual fase inicia a mitose? a) profase b) metafase c) anafase d) telofase", answer: "a", type: "especial" },
+	{ prompt: "Qual fase tem cromossomos no equador? a) metafase b) profase c) telofase d) anafase", answer: "a", type: "especial" },
+	{ prompt: "Qual fase reconstrói o nucleo? a) telofase b) profase c) metafase d) anafase", answer: "a", type: "especial" },
+
+	// MEIOSE (32)
+
+	// fáceis
+	{ prompt: "A meiose possui quantas divisoes? a) 1 b) 2 c) 3 d) 4", answer: "b", type: "facil" },
+	{ prompt: "Gametas sao produzidos por: a) mitose b) meiose c) clonagem d) fragmentacao", answer: "b", type: "facil" },
+	{ prompt: "A meiose produz quantas celulas-filhas? a) 2 b) 3 c) 4 d) 6", answer: "c", type: "facil" },
+	{ prompt: "O que e um gameta? a) celula somatica b) celula sexual c) nervosa d) tronco", answer: "b", type: "facil" },
+	{ prompt: "O que e haploide? a) n b) 2n c) 3n d) 4n", answer: "a", type: "facil" },
+	{ prompt: "O que e diploide? a) n b) 2n c) 3n d) 4n", answer: "b", type: "facil" },
+
+	// médias
+	{ prompt: "Em qual etapa ocorre o crossing-over? a) profase i b) metafase i c) anafase ii d) telofase ii", answer: "a", type: "media" },
+	{ prompt: "Na meiose I, o que se separa? a) cromatides b) cromossomos homologos c) nucleo d) genes", answer: "b", type: "media" },
+	{ prompt: "Qual fase separa cromatides irmas? a) anafase i b) metafase ii c) anafase ii d) profase ii", answer: "c", type: "media" },
+	{ prompt: "Quantos cromossomos tem um gameta humano? a) 46 b) 23 c) 92 d) 12", answer: "b", type: "media" },
+	{ prompt: "Qual fase finaliza a meiose I? a) telofase i b) profase i c) anafase i d) metafase i", answer: "a", type: "media" },
+	{ prompt: "Qual fase ocorre pareamento de homologos? a) profase i b) metafase ii c) anafase i d) telofase ii", answer: "a", type: "media" },
+
+	// difíceis
+	{ prompt: "A variabilidade genetica vem do crossing-over e: a) mutacao b) segregacao independente c) mitose d) replicacao", answer: "b", type: "dificil" },
+	{ prompt: "A sinapse ocorre em: a) profase i b) metafase ii c) anafase i d) telofase ii", answer: "a", type: "dificil" },
+	{ prompt: "O quiasma e observado em: a) profase i b) metafase i c) anafase ii d) telofase i", answer: "a", type: "dificil" },
+	{ prompt: "Cromossomos homologos sao: a) identicos b) genes para mesmas caracteristicas c) inexistentes d) mutantes", answer: "b", type: "dificil" },
+
+	// verdadeiro ou falso
+	{ prompt: "A meiose reduz o numero de cromossomos pela metade.", answer: "verdadeiro", type: "verdadeiro_falso" },
+	{ prompt: "A meiose gera variabilidade genetica.", answer: "verdadeiro", type: "verdadeiro_falso" },
+	{ prompt: "A meiose ocorre em celulas somaticas.", answer: "falso", type: "verdadeiro_falso" },
+	{ prompt: "Cromatides irmas se separam na meiose I.", answer: "falso", type: "verdadeiro_falso" },
 	{ prompt: "Crossing-over ocorre na profase I.", answer: "verdadeiro", type: "verdadeiro_falso" },
 	{ prompt: "A meiose II separa cromossomos homologos.", answer: "falso", type: "verdadeiro_falso" },
-	{ prompt: "O DNA se duplica na interfase.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "O zigoto e formado pela uniao de dois gametas.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "A citocinese separa o citoplasma ao final da divisao.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "O fuso mitotico ajuda a separar cromossomos.", answer: "verdadeiro", type: "verdadeiro_falso" },
-	{ prompt: "Cromossomos homologos sao identicos em tudo.", answer: "falso", type: "verdadeiro_falso" },
-	{ prompt: "A mitose reduz o numero de cromossomos pela metade.", answer: "falso", type: "verdadeiro_falso" },
 
-	// Fase de perguntas especiais
-	{ prompt: "Qual processo troca segmentos geneticos? a) mitose b) crossing-over c) clonagem d) replicacao", answer: "b", type: "especial" },
+	// especiais
 	{ prompt: "Qual divisao reduz cromossomos? a) mitose b) meiose i c) meiose ii d) interfase", answer: "b", type: "especial" },
-	{ prompt: "Qual divisao separa cromatides irmas na meiose? a) meiose i b) meiose ii c) profase d) interfase", answer: "b", type: "especial" },
 	{ prompt: "Qual processo aumenta variabilidade? a) mitose b) crossing-over c) citocinese d) replicacao", answer: "b", type: "especial" },
-	{ prompt: "Qual fase ocorre pareamento de homologos? a) profase i b) metafase ii c) anafase i d) telofase ii", answer: "a", type: "especial" },
 	{ prompt: "Qual evento caracteriza a meiose I? a) separacao de cromatides b) reducao cromossomica c) replicacao d) crescimento", answer: "b", type: "especial" },
-	{ prompt: "Qual estrutura organiza o fuso? a) ribossomo b) centriolo c) nucleo d) lisossomo", answer: "b", type: "especial" },
-	{ prompt: "Qual celula e formada apos fecundacao? a) gameta b) zigoto c) embriao d) ovulo", answer: "b", type: "especial" },
-	{ prompt: "O que e 2n? a) haploide b) diploide c) triploide d) tetraploide", answer: "b", type: "especial" },
-	{ prompt: "O que e n? a) diploide b) haploide c) triploide d) tetraploide", answer: "b", type: "especial" }
+	{ prompt: "Qual celula e formada apos fecundacao? a) gameta b) zigoto c) embriao d) ovulo", answer: "b", type: "especial" }
 ];

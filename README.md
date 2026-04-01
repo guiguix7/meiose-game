@@ -67,15 +67,26 @@ Total de Casas: 64
 
 Total de Perguntas: 64
 
-Total de Perguntas Fáceis:20
+Total de Perguntas Fáceis:20 -> Só em casas normais
 
-Total de Perguntas Médias:8
+Total de Perguntas Médias:8 -> Só em casas normais
 
-Total de Perguntas Difíceis:6
+Total de Perguntas Difíceis:6 -> Só em casas normais
 
-Total de Perguntas de Verdadeiro ou Falso:20
+Total de Perguntas de Verdadeiro ou Falso:20 -> Só de Verdadeiro ou Falso
 
-Total de Perguntas de Especiais:10
+Total de Perguntas de Especiais:10 -> Só em casas especiais [1: "Inicio",
+    4: "Interfase",
+    13: "Profase I",
+    20: "Metafase I",
+    29: "Anafase I",
+    36: "Telofase I",
+    45: "Profase II",
+    52: "Metafase II",
+    61: "Anafase II",
+    64: "Telofase II",crossing: ([8, 19, 36, 52]),
+    mutacao: ([12, 27, 44, 60]),
+    divisao: ([5, 22, 40, 58])]
 
 Casas Meiose {
     1: "Inicio",
@@ -93,7 +104,6 @@ Casas Meiose {
 Casas Especiais {
     crossing: ([8, 19, 36, 52]),
     mutacao: ([12, 27, 44, 60]),
-    divisao: ([5, 22, 40, 58])
 }
 
 Casas Verdadeiro ou Falso {
@@ -104,6 +114,14 @@ Casas Alternativas {
 
 }
 
+
+===============================
+
+Ajustes {
+    Se um jogador acertar uma pergunta especial, mas não tem nenhum jogador pra roubar, ele ganhará 5 pontos
+    A casa divisão não vai ter mais pernguntas especiais, serão normais
+    
+}
 
 Perguntas {
 

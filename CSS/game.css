@@ -402,13 +402,15 @@ p {
 	margin-bottom: 10px;
 }
 
-#answer-input {
-	width: 100%;
-	border: 2px solid #c8d9e8;
-	border-radius: 12px;
-	padding: 10px 12px;
-	font-size: 1rem;
-	margin-bottom: 10px;
+.question-type {
+	display: inline-block;
+	margin: 0 0 8px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 0.82rem;
+	font-weight: 700;
+	background: #e8f4ff;
+	color: #1f5f88;
 }
 
 .answer-options {
@@ -442,6 +444,11 @@ p {
 	min-height: 22px;
 	margin-top: 8px;
 	font-weight: 700;
+}
+
+.winner-card {
+	width: min(460px, 92vw);
+	text-align: center;
 }
 
 footer p {

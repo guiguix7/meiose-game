@@ -36,27 +36,27 @@
                 </div>
                 <div class="legend-item" title="Casa de fase da meiose no tabuleiro.">
                     <span class="legend-swatch fase"></span>
-                    Fase da meiose
+                    Fase da meiose/mitose (Especial)
                 </div>
                 <div class="legend-item" title="Troca de posicao com outro jogador aleatorio.">
                     <span class="legend-swatch crossing"></span>
-                    Crossing-over
+                    Crossing-over (Especial)
                 </div>
                 <div class="legend-item" title="Penalidade de 2 pontos.">
                     <span class="legend-swatch mutacao"></span>
-                    Mutacao (-2 pontos)
+                    Mutação (-2 pontos | Especial)
                 </div>
                 <div class="legend-item" title="Ganha um turno extra.">
                     <span class="legend-swatch divisao"></span>
-                    Divisao celular (turno extra)
+                    Divisão celular (Turno extra)
                 </div>
-                <div class="legend-item" title="Casa que gera questao de multipla escolha.">
+                <div class="legend-item" title="Casa de pergunta alternativa (A, B, C, D).">
                     <span class="legend-swatch question-multipla"></span>
-                    Questao de multipla escolha
+                    Pergunta alternativa (A/B/C/D)
                 </div>
-                <div class="legend-item" title="Casa que gera questao de verdadeiro ou falso.">
+                <div class="legend-item" title="Casa de pergunta verdadeiro ou falso (A/B).">
                     <span class="legend-swatch question-vf"></span>
-                    Questao de verdadeiro ou falso
+                    Verdadeiro ou falso
                 </div>
             </div>
             <div class="status-grid">
@@ -81,49 +81,58 @@
                 <h1 class="page-title">Instruções</h1>
                 <button id="close-rules-btn" class="btn" type="button">Fechar</button>
             </div>
-                <p class="page-subtitle">Regras e instrucoes para jogar o Meiose Quest.</p>
+                <p class="page-subtitle">Regras e instrucoes para jogar o M/M Quiz.</p>
 
                 <div class="select-players">
-                    <div class="info-card">
-                        <strong>Objetivo</strong>
-                        <span>Ser o primeiro jogador a alcancar 20 pontos.</span>
-                    </div>
-                    <div class="info-card">
-                        <strong>Configuracao inicial</strong>
-                        <span>Selecione de 1 a 6 jogadores e informe nome e cor unicos.</span>
-                    </div>
-                    <div class="info-card">
-                        <strong>Turno do jogador</strong>
-                        <span>Role os dados, avance pelas casas e responda as perguntas.</span>
-                    </div>
-                    <div class="info-card">
-                        <strong>Pontuacao</strong>
-                        <span>Acerto soma pontos conforme o tipo; erro reduz 1 ponto.</span>
-                    </div>
-                    <div class="info-card">
-                        <strong>Dados iguais</strong>
-                        <span>Se acertar com dados iguais, ganha um turno extra.</span>
-                    </div>
-                    <div class="info-card">
-                        <strong>Casas especiais</strong>
-                        <span>Crossing-over troca posicao, mutacao tira 2 pontos e divisao da turno extra.</span>
-                    </div>
-                    <div class="info-card">
-                        <strong>Fim de jogo</strong>
-                        <span>Ganha quem fizer 20 pontos ou quem tiver maior pontuacao ao acabar as perguntas.</span>
-                    </div>
-                </div>
+				<div class="info-card">
+					<strong>Objetivo</strong>
+					<span>Ser o primeiro jogador a alcancar 20 pontos.</span>
+				</div>
+				<div class="info-card">
+					<strong>Configuração inicial</strong>
+					<span>Selecione de 1 a 6 jogadores e informe nome e cor.</span>
+				</div>
+				<div class="info-card">
+					<strong>Turno do jogador</strong>
+					<span>Role os dados, avance pelas casas e responda as perguntas.</span>
+				</div>
+				<div class="info-card">
+					<strong>Pontuação</strong>
+					<span>Acerto soma pontos conforme o tipo de pergunta; erro reduz 1 ponto.</span>
+				</div>
+				<div class="info-card">
+					<strong>Dados iguais</strong>
+					<span>Se acertar com dados iguais, ganha um turno extra.</span>
+				</div>
+				<div class="info-card">
+					<strong>Casas especiais</strong>
+					<span>Crossing-over: Troca posição com um jogador aleatório, Mutação: Tira 2 pontos, Divisão: Dá um turno extra ao jogador.</span>
+				</div>
+				<div class="info-card">
+					<strong>Fim de jogo</strong>
+					<span>Ganha quem fizer 20 pontos ou quem tiver maior pontuação ao acabar as perguntas.</span>
+				</div>
+			</div>
         </div>
     </div>
 
     <div id="question-modal" class="modal hidden">
         <div class="modal-card">
             <h3>Pergunta</h3>
+            <p id="question-type" class="question-type"></p>
             <p id="question-prompt"></p>
             <fieldset id="answer-options" class="answer-options hidden" aria-label="Alternativas da pergunta">
             </fieldset>
             <button id="submit-answer" class="btn primary" type="button">Confirmar</button>
             <p id="feedback" class="feedback"></p>
+        </div>
+    </div>
+
+    <div id="winner-modal" class="modal hidden">
+        <div class="modal-card winner-card">
+            <h3 id="winner-title">Fim de jogo</h3>
+            <p id="winner-message"></p>
+            <button id="winner-home-btn" class="btn primary" type="button">Voltar ao inicio</button>
         </div>
     </div>
     <script src="JS/questions.js" defer></script>
