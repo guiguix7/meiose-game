@@ -2,8 +2,8 @@ const QUESTIONS = [
 	// MITOSE (32)
 
 	// fáceis
-	{ prompt: "Em qual fase da mitose os cromossomos se alinham no plano equatorial? a) profase b) metafase c) anafase d) telofase", answer: "b", type: "facil" },
-	{ prompt: "Qual processo gera duas celulas-filhas identicas? a) meiose b) mitose c) fecundacao d) crossing-over", answer: "b", type: "facil" },
+	{ prompt: "Em qual fase da mitose os cromossomos se alinham no plano equatorial? a) Profase b) Metafase c) Anafase d) Telofase", answer: "b", type: "facil" },
+	{ prompt: "Qual processo gera duas celulas-filhas identicas? a) Meiose b) mitose c) fecundacao d) crossing-over", answer: "b", type: "facil" },
 	{ prompt: "Celulas somaticas se dividem por: a) meiose b) mitose c) fecundacao d) clonagem", answer: "b", type: "facil" },
 	{ prompt: "Em qual fase as cromatides irmas se separam? a) profase b) metafase c) anafase d) telofase", answer: "c", type: "facil" },
 	{ prompt: "A mitose produz quantas celulas-filhas? a) 2 b) 3 c) 4 d) 8", answer: "a", type: "facil" },
