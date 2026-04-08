@@ -34,13 +34,21 @@ p {
 	margin-top: 0;
 }
 
+.app-shell {
+	width: 100%;
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: clamp(8px, 2vw, 20px);
+	box-sizing: border-box;
+}
+
 .card {
 	background: var(--card);
 	border: 2px solid var(--border);
 	border-radius: 18px;
 	box-shadow: var(--shadow);
 	padding: 16px;
-	margin: 20px;
+	margin: 0 0 clamp(8px, 1.5vw, 20px);
 }
 
 .hidden {
@@ -101,7 +109,6 @@ p {
 .board-card {
 	padding: 14px;
 	animation: rise-in 0.7s ease;
-	margin: 20px;
 }
 
 .legend {
@@ -456,6 +463,7 @@ footer p {
 	font-size: 0.9rem;
 	color: #19324a;
 	opacity: 0.75;
+	padding: 12px 0;
 }
 
 @keyframes rise-in {
@@ -487,5 +495,103 @@ footer p {
 	#board {
 		grid-template-columns: repeat(8, minmax(34px, 1fr));
 		min-height: 420px;
+	}
+
+	.cell {
+		min-height: 34px;
+	}
+}
+
+@media (max-width: 600px) {
+	.top-panel {
+		gap: 10px;
+	}
+
+	.top-panel h1 {
+		font-size: 1.1rem;
+	}
+
+	.dice-box {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		align-items: center;
+	}
+
+	.dice-box .btn {
+		flex: 1 1 auto;
+		padding: 9px 10px;
+		font-size: 0.9rem;
+	}
+
+	#board {
+		gap: 5px;
+		padding: 8px;
+		min-height: auto;
+	}
+
+	.cell {
+		min-height: 30px;
+	}
+
+	.board-card {
+		padding: 10px;
+	}
+}
+
+@media (max-width: 480px) {
+	.card {
+		border-radius: 12px;
+		padding: 10px;
+	}
+
+	.board-card {
+		padding: 8px;
+	}
+
+	#board {
+		gap: 3px;
+		padding: 6px;
+		grid-template-columns: repeat(8, minmax(0, 1fr));
+		border-radius: 12px;
+	}
+
+	.cell {
+		min-height: 0;
+		aspect-ratio: 1;
+		font-size: 0.65rem;
+		border-radius: 8px;
+	}
+
+	.house-tag {
+		display: none;
+	}
+
+	.cell::after {
+		width: 8px;
+		height: 8px;
+	}
+
+	.legend {
+		grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+		gap: 6px;
+	}
+
+	.legend-item {
+		font-size: 0.8rem;
+	}
+
+	.status-grid {
+		gap: 8px;
+	}
+
+	.event-log {
+		max-height: 120px;
+	}
+
+	.token {
+		width: clamp(12px, 3vw, 18px);
+		height: clamp(12px, 3vw, 18px);
 	}
 }
