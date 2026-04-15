@@ -1,6 +1,3 @@
-import { inject } from "@vercel/analytics"
-
-inject()
 const PLAYER_COLORS = ["#ff6b6b", "#4dabf7", "#51cf66", "#ffd43b", "#b197fc", "#ff922b"];
 
 const setup = {
