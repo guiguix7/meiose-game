@@ -234,7 +234,8 @@ footer p {
 	font-size: 0.9rem;
 	color: #19324a;
 	opacity: 0.75;
-	margin-top: -50px;
+	margin-top: 12px;
+	padding-bottom: 12px;
 }
 
 @keyframes rise-in {
@@ -260,5 +261,23 @@ footer p {
 
 	.select-players {
 		grid-template-columns: 1fr;
+	}
+
+	.name-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 480px) {
+	.landing-page {
+		padding: 8px;
+	}
+
+	.setup-card {
+		padding: 14px;
+	}
+
+	.player-config-row {
+		grid-template-columns: 1fr 56px;
 	}
 }
