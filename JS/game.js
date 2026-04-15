@@ -1,3 +1,7 @@
+import { inject } from "@vercel/analytics"
+
+inject()
+
 const HOUSE_COUNT = 64;
 const START_POINTS = 10;
 const WIN_POINTS = 20;
